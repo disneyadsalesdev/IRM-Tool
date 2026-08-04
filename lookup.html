@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IRM Rules Lookup</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --border: #2a2f3d;
+      --text: #e8eaed;
+      --muted: #9aa0ab;
+      --accent: #6ea8fe;
+      --danger: #f87171;
+      --success: #4ade80;
+      --publisher: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; }
+    h1 { font-size: 1.5rem; font-weight: 600; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+    .mode-toggle {
+      display: inline-flex;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+    .mode-toggle button {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      width: auto;
+      min-width: 0;
+    }
+    .mode-toggle button.active {
+      background: var(--accent);
+      color: #0f1117;
+      font-weight: 600;
+    }
+    .panel.rule-panel {
+      border-left: 3px solid var(--accent);
+    }
+    .panel.rule-panel .meta-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: -8px;
+      margin-bottom: 14px;
+    }
+    .panel.rule-panel .meta-note a { color: var(--accent); }
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    select, input, button.action {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      width: 100%;
+    }
+    button.action {
+      cursor: pointer;
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0f1117;
+      font-weight: 600;
+      width: auto;
+      align-self: end;
+      min-width: 88px;
+    }
+    button.action:hover { opacity: 0.9; }
+    .filter-row { margin-bottom: 16px; }
+    .filter-row input { font-size: 0.9rem; padding: 8px 12px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    .panel h2 { font-size: 1.15rem; margin: 0 0 4px; }
+    .meta { color: var(--muted); font-size: 0.85rem; margin-bottom: 16px; }
+    .context-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .context-box h3 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+    .context-box h3:not(:first-child) { margin-top: 14px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      background: rgba(167, 139, 250, 0.15);
+      border: 1px solid rgba(167, 139, 250, 0.45);
+      color: var(--publisher);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .pill.country {
+      background: rgba(110, 168, 254, 0.12);
+      border-color: rgba(110, 168, 254, 0.4);
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .pill.country.clickable {
+      cursor: pointer;
+      font: inherit;
+    }
+    .pill.country.clickable:hover {
+      background: rgba(110, 168, 254, 0.22);
+      border-color: var(--accent);
+    }
+    .link-country {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--accent);
+      cursor: pointer;
+      font: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .link-country:hover { opacity: 0.85; }
+    .rule-link {
+      background: none;
+      border: none;
+      padding: 0;
+      color: var(--accent);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .pill.match {
+      background: rgba(248, 113, 113, 0.12);
+      border-color: rgba(248, 113, 113, 0.4);
+      color: var(--danger);
+      font-weight: 500;
+    }
+    .section { margin-bottom: 16px; }
+    .section h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin: 0 0 8px;
+    }
+    ul { margin: 0; padding-left: 18px; columns: 2; }
+    li { margin-bottom: 4px; font-size: 0.92rem; }
+    .blocked { color: var(--danger); }
+    .allowed { color: var(--success); }
+    .empty { color: var(--muted); font-style: italic; margin: 0; }
+    .rules { margin-top: 8px; }
+    .rules li { columns: 1; color: var(--muted); font-size: 0.85rem; }
+    .league-rows { display: flex; flex-direction: column; gap: 12px; }
+    .league-row {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .league-row strong { display: block; margin-bottom: 8px; font-size: 0.95rem; }
+    .league-row .row-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 6px; }
+    #status { color: var(--muted); font-size: 0.85rem; }
+    @media (max-width: 560px) {
+      .controls { grid-template-columns: 1fr; }
+      button.action { width: 100%; }
+      ul { columns: 1; }
+      .mode-toggle { display: flex; width: 100%; }
+      .mode-toggle button { flex: 1; padding: 8px 10px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>IRM Rules Lookup</h1>
+    <p class="sub" id="subtitle">See what is blocked for a sports league and which publishers the rule applies to.</p>
+
+    <div class="mode-toggle" role="tablist">
+      <button type="button" id="mode-league" class="active" role="tab" aria-selected="true">By sports league</button>
+      <button type="button" id="mode-restriction" role="tab" aria-selected="false">By restriction</button>
+    </div>
+
+    <div id="panel-league" class="mode-panel active">
+      <label for="league">Sports league or inventory preset</label>
+      <div class="controls">
+        <select id="league">
+          <option value="">— Select a league —</option>
+        </select>
+        <button class="action" id="go-league" type="button">Look up</button>
+      </div>
+      <div class="filter-row">
+        <input id="filter-league" type="text" placeholder="Filter… e.g. NFL, ACC, NCAA, PGA" />
+      </div>
+      <div class="chips" id="chips-league">
+        <span class="chip" data-league="nfl football">NFL</span>
+        <span class="chip" data-league="nfl flag">NFL Flag</span>
+        <span class="chip" data-league="anz nfl">NFL · ANZ</span>
+        <span class="chip" data-league="major league baseball">MLB</span>
+        <span class="chip" data-league="national basketball association">NBA</span>
+        <span class="chip" data-league="national hockey league">NHL</span>
+        <span class="chip" data-league="ncaaf">NCAA Football</span>
+        <span class="chip" data-league="acc network">NCAA · ACC</span>
+        <span class="chip" data-league="excluding acc">NCAA · Excl. ACC</span>
+        <span class="chip" data-league="spanish laliga">LaLiga</span>
+        <span class="chip" data-league="pga tour">PGA Tour</span>
+      </div>
+    </div>
+
+    <div id="panel-restriction" class="mode-panel">
+      <label for="restriction">Restriction type</label>
+      <div class="controls">
+        <select id="restriction">
+          <option value="">— Select a restriction —</option>
+        </select>
+        <button class="action" id="go-restriction" type="button">Look up</button>
+      </div>
+      <div class="filter-row">
+        <input id="filter-restriction" type="text" placeholder="Or search… e.g. alcohol, gambling, pharma, crypto" />
+      </div>
+      <div class="chips" id="chips-restriction">
+        <span class="chip" data-restriction="alcohol">Alcohol</span>
+        <span class="chip" data-restriction="gambling">Gambling / Sportsbooks</span>
+        <span class="chip" data-restriction="political">Political</span>
+        <span class="chip" data-restriction="video-games">Video Games</span>
+        <span class="chip" data-restriction="tobacco">Tobacco</span>
+        <span class="chip" data-restriction="crypto">Crypto / Prediction Markets</span>
+        <span class="chip" data-restriction="pharma">Pharma / RX</span>
+        <span class="chip" data-restriction="sexual-health">Sexual Health</span>
+      </div>
+    </div>
+
+    <p id="status">Loading rules…</p>
+    <div id="results"></div>
+  </div>
+
+  <script>
+    const LEAGUE_ALIASES = {
+      nfl: ["national football league", "nfl football"],
+      nba: ["national basketball association", "national basketball league", "wnba"],
+      mlb: ["major league baseball", "mlb baseball"],
+      nhl: ["national hockey league"],
+      ncaa: ["ncaaf", "ncaam"],
+      laliga: ["spanish laliga", "spanish laliga 2"],
+      acc: ["college sports ncaa - acc network", "acc network", "ncaa acc"],
+      "nfl flag": ["nfl flag championships", "nfl flag football"],
+      "anz nfl": ["sports | anz | nfl", "anz nfl"],
+    };
+
+    const TARGET_SOURCES = [
+      { dimension: "sports_league", group: "Sports leagues", prefix: "league:" },
+      { dimension: "inventory_preset", group: "Inventory presets (NCAA, etc.)", prefix: "preset:" },
+    ];
+
+    const RESTRICTION_PRESETS = [
+      {
+        id: "alcohol",
+        label: "Alcohol",
+        desc: "Beer, liquor, alcoholic beverages",
+        test: (s) => /alcoholic|beer|liquor/i.test(s),
+      },
+      {
+        id: "gambling",
+        label: "Gambling / Sportsbooks",
+        desc: "Sportsbooks, casinos, fantasy, lottery",
+        test: (s) => /gambling|sportsbook|fantasy|lottery|sweepstakes|casino|icasino/i.test(s),
+      },
+      {
+        id: "political",
+        label: "Political",
+        desc: "Campaigns, advocacy, ballot issues",
+        test: (s) => /political/i.test(s),
+      },
+      {
+        id: "video-games",
+        label: "Video Games & Consoles",
+        desc: "Entertainment- Video Games, Consoles",
+        test: (s) => /video games,\s*consoles/i.test(s),
+      },
+      {
+        id: "tobacco",
+        label: "Tobacco",
+        desc: "Tobacco control, nicotine products",
+        test: (s) => /tobacco|nicorette|nicoderm/i.test(s),
+      },
+      {
+        id: "crypto",
+        label: "Crypto / Prediction Markets",
+        desc: "Crypto brands and prediction market tags",
+        test: (s) => /crypto|coinbase|kalshi|binance|gemini|prediction market/i.test(s),
+      },
+      {
+        id: "pharma",
+        label: "Pharma / Prescription (RX)",
+        desc: "Prescription drugs and pharma",
+        test: (s) => /pharma|prescription drugs|\bRX\b/i.test(s),
+      },
+      {
+        id: "sexual-health",
+        label: "Sexual Health",
+        desc: "Sexual health category blocks",
+        test: (s) => /sexual health/i.test(s),
+      },
+      {
+        id: "government",
+        label: "Government",
+        desc: "Government and agency blocks",
+        test: (s) => /^government$/i.test(s.trim()) || /government-/i.test(s),
+      },
+    ];
+
+    const RESTRICT_FIELDS = [
+      "excluded_brands", "excluded_industries", "excluded_asset_tags",
+      "excluded_ad_products", "excluded_agencies",
+      "included_brands", "included_industries", "included_asset_tags",
+      "included_ad_products", "included_agencies", "exceptions",
+    ];
+
+    const BLOCK_FIELDS = [
+      "excluded_brands", "excluded_industries", "excluded_asset_tags",
+      "excluded_ad_products", "excluded_agencies",
+    ];
+
+    let lookup = null;
+    let targetOptions = [];
+    let targetIndex = {};
+    let restrictionCatalog = [];
+    let currentMode = "league";
+    let lastResultsContext = null;
+
+    function getUniqueRules(rules) {
+      const byId = new Map();
+      for (const r of rules || []) {
+        if (!byId.has(r.id)) byId.set(r.id, r);
+      }
+      return [...byId.values()].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function resultFromRule(rule) {
+      const sort = (arr) => [...(arr || [])].sort((a, b) => a.localeCompare(b));
+      return {
+        rule_count: 1,
+        rules: [rule],
+        publishers: sort(rule.publisher),
+        countries: sort(rule.country),
+        excluded_brands: sort(rule.excluded_brands),
+        excluded_industries: sort(rule.excluded_industries),
+        excluded_asset_tags: sort(rule.excluded_asset_tags),
+        excluded_ad_products: sort(rule.excluded_ad_products),
+        excluded_agencies: sort(rule.excluded_agencies),
+        included_brands: sort(rule.included_brands),
+        included_industries: sort(rule.included_industries),
+        included_asset_tags: sort(rule.included_asset_tags),
+        included_ad_products: sort(rule.included_ad_products),
+        included_agencies: sort(rule.included_agencies),
+        exceptions: sort(rule.exceptions),
+      };
+    }
+
+    function renderResultsContent(label, result) {
+      const unique = getUniqueRules(result.rules);
+      if (unique.length > 1) {
+        return unique.map((r) =>
+          renderLeaguePanel(r.name, resultFromRule(r), { hideSourceRules: true, showNotes: true, rulePanel: true })
+        ).join("");
+      }
+      return renderLeaguePanel(label, result);
+    }
+
+    function displayResults(label, result) {
+      lastResultsContext = { label, result };
+      document.getElementById("results").innerHTML = renderResultsContent(label, result);
+    }
+
+    function restrictionCount(entry) {
+      return (entry.excluded_brands?.length || 0) +
+        (entry.excluded_industries?.length || 0) +
+        (entry.excluded_asset_tags?.length || 0);
+    }
+
+    function buildTargetIndex() {
+      targetOptions = [];
+      targetIndex = {};
+
+      for (const { dimension, group, prefix } of TARGET_SOURCES) {
+        const dim = lookup[dimension] || {};
+        for (const [key, entry] of Object.entries(dim)) {
+          if (!hasRestrictions(entry)) continue;
+          const fullKey = `${prefix}${key}`;
+          const ruleNames = (entry.rules || []).map((r) => r.name).join(" ");
+          targetIndex[fullKey] = { entry, dimension, key, group };
+          targetOptions.push({
+            fullKey,
+            key,
+            name: entry.display_name,
+            group,
+            counts: restrictionCount(entry),
+            searchText: `${entry.display_name} ${ruleNames} ${key}`.toLowerCase(),
+          });
+        }
+      }
+
+      targetOptions.sort((a, b) =>
+        a.group.localeCompare(b.group) || a.name.localeCompare(b.name)
+      );
+    }
+
+    function getAllTargetEntries() {
+      return Object.values(targetIndex).map(({ entry, key, dimension }) => ({
+        entry,
+        compositeKey: `${dimension}:${key}`,
+        dimension,
+        key,
+      }));
+    }
+
+    function hasRestrictions(entry) {
+      return RESTRICT_FIELDS.some((f) => (entry[f] || []).length > 0);
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function getPublishers(entry) {
+      const pubs = new Set();
+      for (const r of entry.rules || []) {
+        (r.publisher || []).forEach((p) => pubs.add(p));
+      }
+      return [...pubs].sort((a, b) => a.localeCompare(b));
+    }
+
+    function getCountries(entry) {
+      const countries = new Set();
+      for (const r of entry.rules || []) {
+        (r.country || []).forEach((c) => countries.add(c));
+      }
+      return [...countries].sort((a, b) => a.localeCompare(b));
+    }
+
+    function getBlockedItems(entry) {
+      const items = [];
+      for (const field of BLOCK_FIELDS) {
+        for (const val of entry[field] || []) {
+          items.push({ type: field.replace("excluded_", "").replace("_", " "), value: val });
+        }
+      }
+      return items;
+    }
+
+    function mergeResults(matches) {
+      const merged = Object.fromEntries(RESTRICT_FIELDS.map((f) => [f, new Set()]));
+      merged.rules = [];
+      merged.publishers = new Set();
+      merged.countries = new Set();
+
+      for (const [, v] of matches) {
+        for (const f of RESTRICT_FIELDS) (v[f] || []).forEach((x) => merged[f].add(x));
+        merged.rules.push(...v.rules);
+        for (const r of v.rules) {
+          (r.publisher || []).forEach((p) => merged.publishers.add(p));
+          (r.country || []).forEach((c) => merged.countries.add(c));
+        }
+      }
+
+      const result = Object.fromEntries(
+        RESTRICT_FIELDS.map((f) => [f, [...merged[f]].sort((a, b) => a.localeCompare(b))])
+      );
+      result.rule_count = merged.rules.length;
+      result.rules = merged.rules;
+      result.publishers = [...merged.publishers].sort((a, b) => a.localeCompare(b));
+      result.countries = [...merged.countries].sort((a, b) => a.localeCompare(b));
+      return result;
+    }
+
+    function renderList(items, cls) {
+      if (!items.length) return `<p class="empty">None</p>`;
+      return `<ul class="${cls}">${items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</ul>`;
+    }
+
+    function renderPills(items, extraClass = "", { clickable = false } = {}) {
+      if (!items.length) return `<p class="empty">Not specified</p>`;
+      if (clickable && extraClass === "country") {
+        return `<div class="pills">${items.map((i) =>
+          `<button type="button" class="pill country clickable" data-country="${escapeHtml(i)}">${escapeHtml(i)}</button>`
+        ).join("")}</div>`;
+      }
+      return `<div class="pills">${items.map((i) =>
+        `<span class="pill ${extraClass}">${escapeHtml(i)}</span>`
+      ).join("")}</div>`;
+    }
+
+    function renderCountryLinks(countryList) {
+      if (!countryList.length) return "";
+      return countryList.map((c) =>
+        `<button type="button" class="link-country" data-country="${escapeHtml(c)}">${escapeHtml(c)}</button>`
+      ).join(", ");
+    }
+
+    function findCountryEntry(countryName) {
+      const dim = lookup.country || {};
+      const q = countryName.toLowerCase().trim();
+      const key = Object.keys(dim).find(
+        (k) => k === q || dim[k].display_name.toLowerCase() === q
+      );
+      return key ? { key, entry: dim[key] } : null;
+    }
+
+    function runCountryLookup(countryName) {
+      const found = findCountryEntry(countryName);
+      if (!found) {
+        document.getElementById("status").textContent = `No IRM rules found for country "${countryName}".`;
+        return;
+      }
+      const { entry } = found;
+      const result = mergeResults([[found.key, entry]]);
+      document.getElementById("status").textContent = `Showing all IRM restrictions for ${entry.display_name}`;
+      document.getElementById("results").innerHTML = renderCountryPanel(entry.display_name, result);
+      document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderCountryPanel(label, result) {
+      const seen = new Set();
+      const ruleLines = [];
+      for (const r of result.rules) {
+        if (seen.has(r.name)) continue;
+        seen.add(r.name);
+        const pubs = r.publisher?.length ? r.publisher.join(", ") : "All publishers on rule";
+        ruleLines.push(`${escapeHtml(r.name)} · ${escapeHtml(pubs)}`);
+      }
+
+      return `
+        <div class="panel">
+          <h2>Country: ${escapeHtml(label)}</h2>
+          <p class="meta">${result.rule_count} rule(s) apply in this country</p>
+          <div class="context-box">
+            <h3>Publishers in scope</h3>
+            ${renderPills(result.publishers)}
+          </div>
+          ${result.excluded_brands.length ? `<div class="section"><h3 class="blocked">Blocked brands (${result.excluded_brands.length})</h3>${renderList(result.excluded_brands, "blocked")}</div>` : ""}
+          ${result.excluded_industries.length ? `<div class="section"><h3 class="blocked">Blocked industries (${result.excluded_industries.length})</h3>${renderList(result.excluded_industries, "blocked")}</div>` : ""}
+          ${result.excluded_asset_tags.length ? `<div class="section"><h3 class="blocked">Blocked asset tags (${result.excluded_asset_tags.length})</h3>${renderList(result.excluded_asset_tags, "blocked")}</div>` : ""}
+          ${result.exceptions.length ? `<div class="section"><h3 class="allowed">Exceptions (still allowed)</h3>${renderList(result.exceptions, "allowed")}</div>` : ""}
+          ${ruleLines.length ? `<div class="section rules"><h3>Source rules (${ruleLines.length})</h3><ul>${ruleLines.slice(0, 50).map((l) => `<li>${l}</li>`).join("")}${ruleLines.length > 50 ? `<li>…and ${ruleLines.length - 50} more</li>` : ""}</ul></div>` : ""}
+        </div>`;
+    }
+
+    function renderLeaguePanel(label, result, opts = {}) {
+      const { hideSourceRules = false, showNotes = false, rulePanel = false } = opts;
+      const seen = new Set();
+      const ruleLines = [];
+      for (const r of result.rules) {
+        if (seen.has(r.name)) continue;
+        seen.add(r.name);
+        const pubs = r.publisher?.length ? r.publisher.join(", ") : "All publishers on rule";
+        const countries = r.country?.length ? r.country : [];
+        ruleLines.push(
+          `<button type="button" class="link-country rule-link" data-rule-id="${escapeHtml(r.id)}">${escapeHtml(r.name)}</button>` +
+          (countries.length ? ` · ${renderCountryLinks(countries)}` : "") +
+          ` · ${escapeHtml(pubs)}`
+        );
+      }
+
+      const hasBlocks = RESTRICT_FIELDS.some((f) => result[f].length > 0);
+      const note = showNotes && result.rules[0]?.notes
+        ? `<p class="meta-note">${linkifyNotes(result.rules[0].notes)}</p>`
+        : "";
+      const panelClass = rulePanel ? "panel rule-panel" : "panel";
+
+      return `
+        <div class="${panelClass}">
+          <h2>${escapeHtml(label)}</h2>
+          <p class="meta">${result.rule_count} rule(s) apply to this target</p>
+          ${note}
+          <div class="context-box">
+            <h3>Runs on these publishers</h3>
+            ${renderPills(result.publishers)}
+            ${result.countries.length ? `<h3>Countries</h3>${renderPills(result.countries, "country", { clickable: true })}` : ""}
+          </div>
+          ${hasBlocks ? "" : `<p class="empty">No brand, industry, or asset-tag blocks for this target.</p>`}
+          ${result.excluded_brands.length ? `<div class="section"><h3 class="blocked">Blocked brands (${result.excluded_brands.length})</h3>${renderList(result.excluded_brands, "blocked")}</div>` : ""}
+          ${result.excluded_industries.length ? `<div class="section"><h3 class="blocked">Blocked industries (${result.excluded_industries.length})</h3>${renderList(result.excluded_industries, "blocked")}</div>` : ""}
+          ${result.excluded_asset_tags.length ? `<div class="section"><h3 class="blocked">Blocked asset tags (${result.excluded_asset_tags.length})</h3>${renderList(result.excluded_asset_tags, "blocked")}</div>` : ""}
+          ${result.excluded_ad_products.length ? `<div class="section"><h3 class="blocked">Blocked ad products (${result.excluded_ad_products.length})</h3>${renderList(result.excluded_ad_products, "blocked")}</div>` : ""}
+          ${result.exceptions.length ? `<div class="section"><h3 class="allowed">Exceptions (still allowed)</h3>${renderList(result.exceptions, "allowed")}</div>` : ""}
+          ${!hideSourceRules && ruleLines.length ? `<div class="section rules"><h3>Source rules — click to view individually</h3><ul>${ruleLines.map((l) => `<li>${l}</li>`).join("")}</ul></div>` : ""}
+        </div>`;
+    }
+
+    function linkifyNotes(notes) {
+      const safe = escapeHtml(notes);
+      return safe.replace(
+        /(https?:\/\/[^\s]+)/g,
+        (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">Jira / reference</a>`
+      );
+    }
+
+    function renderRestrictionPanel(label, description, matchedTerms, leagueHits) {
+      const uniqueLeagues = new Map();
+      for (const hit of leagueHits) {
+        if (!uniqueLeagues.has(hit.key)) uniqueLeagues.set(hit.key, hit);
+      }
+      const rows = [...uniqueLeagues.values()].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+
+      return `
+        <div class="panel">
+          <h2>Cannot run: ${escapeHtml(label)}</h2>
+          <p class="meta">${description || "Shows sports leagues where this category is blocked."}</p>
+          <div class="context-box">
+            <h3>Matched restrictions (${matchedTerms.length})</h3>
+            ${renderPills(matchedTerms, "match")}
+          </div>
+          <div class="section">
+            <h3 class="blocked">Blocked on these targets (${rows.length})</h3>
+            ${rows.length ? `
+              <div class="league-rows">
+                ${rows.map((row) => `
+                  <div class="league-row">
+                    <strong>${escapeHtml(row.name)}</strong>
+                    ${row.group ? `<div class="row-meta">${escapeHtml(row.group)}</div>` : ""}
+                    <div class="row-meta">${escapeHtml(row.matchedOn.join(" · "))}</div>
+                    <div class="context-box" style="margin:0;padding:10px 12px;">
+                      <h3 style="margin:0 0 8px;">Publishers</h3>
+                      ${renderPills(row.publishers)}
+                      ${row.countries.length ? `<h3 style="margin:10px 0 8px;">Countries</h3>${renderPills(row.countries, "country", { clickable: true })}` : ""}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            ` : `<p class="empty">No sports leagues or presets block this restriction.</p>`}
+          </div>
+        </div>`;
+    }
+
+    function findRuleNameMatches(query) {
+      const q = query.toLowerCase().trim();
+      if (!q) return [];
+      const dim = lookup.rule_name || {};
+      return Object.entries(dim)
+        .filter(([k, v]) => k.includes(q) || v.display_name.toLowerCase().includes(q))
+        .map(([k, v]) => ({ key: k, name: v.display_name, entry: v }));
+    }
+
+    function findTargetMatches(query) {
+      const q = query.toLowerCase().trim();
+      if (!q) return [];
+
+      const aliases = [];
+      for (const [aliasKey, vals] of Object.entries(LEAGUE_ALIASES)) {
+        if (q.includes(aliasKey) || vals.some((a) => q.includes(a))) {
+          aliases.push(aliasKey, ...vals);
+        }
+      }
+
+      return targetOptions.filter((opt) =>
+        opt.key === q ||
+        opt.key.includes(q) ||
+        opt.name.toLowerCase().includes(q) ||
+        opt.searchText.includes(q) ||
+        aliases.some((a) => opt.key.includes(a) || opt.name.toLowerCase().includes(a) || opt.searchText.includes(a))
+      );
+    }
+
+    function resolveTarget(fullKey) {
+      return targetIndex[fullKey] || null;
+    }
+
+    function itemMatchesQuery(item, query) {
+      const q = query.toLowerCase().trim();
+      return item.toLowerCase().includes(q);
+    }
+
+    function findRestrictionHits({ presetId, query, exactValue }) {
+      const preset = RESTRICTION_PRESETS.find((p) => p.id === presetId);
+      const q = (query || "").toLowerCase().trim();
+      const matchedTerms = new Set();
+      const leagueHits = [];
+
+      for (const { entry, compositeKey, dimension } of getAllTargetEntries()) {
+        const blocked = getBlockedItems(entry);
+        const hits = blocked.filter(({ value }) => {
+          if (exactValue && value === exactValue) return true;
+          if (preset && preset.test(value)) return true;
+          if (q && itemMatchesQuery(value, q)) return true;
+          return false;
+        });
+
+        if (!hits.length) continue;
+
+        hits.forEach(({ value }) => matchedTerms.add(value));
+        const groupLabel = TARGET_SOURCES.find((s) => s.dimension === dimension)?.group || dimension;
+        leagueHits.push({
+          key: compositeKey,
+          name: entry.display_name,
+          group: groupLabel,
+          publishers: getPublishers(entry),
+          countries: getCountries(entry),
+          matchedOn: hits.map((h) => h.value),
+        });
+      }
+
+      return {
+        label: preset?.label || exactValue || query,
+        description: preset?.desc || (exactValue ? "Exact restriction match" : `Search: ${query}`),
+        matchedTerms: [...matchedTerms].sort((a, b) => a.localeCompare(b)),
+        leagueHits,
+      };
+    }
+
+    function populateLeagueDropdown(filterText = "") {
+      const select = document.getElementById("league");
+      const current = select.value;
+      const q = filterText.toLowerCase().trim();
+      const filtered = targetOptions.filter((opt) =>
+        !q || opt.name.toLowerCase().includes(q) || opt.key.includes(q) || opt.searchText.includes(q)
+      );
+
+      let html = `<option value="">— Select a target (${filtered.length}) —</option>`;
+      for (const { group } of TARGET_SOURCES) {
+        const items = filtered.filter((o) => o.group === group);
+        if (!items.length) continue;
+        html += `<optgroup label="${escapeHtml(group)}">` +
+          items.map(({ fullKey, name, counts }) =>
+            `<option value="${escapeHtml(fullKey)}">${escapeHtml(name)} (${counts})</option>`
+          ).join("") +
+          `</optgroup>`;
+      }
+      select.innerHTML = html;
+
+      if (current && filtered.some((o) => o.fullKey === current)) select.value = current;
+    }
+
+    function populateRestrictionDropdown(filterText = "") {
+      const select = document.getElementById("restriction");
+      const current = select.value;
+      const q = filterText.toLowerCase().trim();
+
+      const presetOptions = RESTRICTION_PRESETS.map((p) => ({
+        value: `preset:${p.id}`,
+        label: p.label,
+        group: "Common categories",
+      }));
+
+      const catalogOptions = restrictionCatalog
+        .filter(({ label }) => !q || label.toLowerCase().includes(q))
+        .map(({ label, leagueCount }) => ({
+          value: `exact:${label}`,
+          label: `${label} (${leagueCount} leagues)`,
+          group: "All blocked items",
+        }));
+
+      const groups = [
+        { name: "Common categories", items: presetOptions.filter((o) => !q || o.label.toLowerCase().includes(q)) },
+        { name: "All blocked items", items: catalogOptions },
+      ];
+
+      let html = `<option value="">— Select a restriction —</option>`;
+      for (const group of groups) {
+        if (!group.items.length) continue;
+        html += `<optgroup label="${escapeHtml(group.name)}">` +
+          group.items.map((o) =>
+            `<option value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</option>`
+          ).join("") +
+          `</optgroup>`;
+      }
+      select.innerHTML = html;
+      if (current && [...select.options].some((o) => o.value === current)) select.value = current;
+    }
+
+    function buildRestrictionCatalog() {
+      const counts = new Map();
+      for (const { entry } of getAllTargetEntries()) {
+        for (const { value } of getBlockedItems(entry)) {
+          counts.set(value, (counts.get(value) || 0) + 1);
+        }
+      }
+      restrictionCatalog = [...counts.entries()]
+        .map(([label, leagueCount]) => ({ label, leagueCount }))
+        .sort((a, b) => b.leagueCount - a.leagueCount || a.label.localeCompare(b.label));
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      const isLeague = mode === "league";
+      document.getElementById("mode-league").classList.toggle("active", isLeague);
+      document.getElementById("mode-restriction").classList.toggle("active", !isLeague);
+      document.getElementById("mode-league").setAttribute("aria-selected", isLeague);
+      document.getElementById("mode-restriction").setAttribute("aria-selected", !isLeague);
+      document.getElementById("panel-league").classList.toggle("active", isLeague);
+      document.getElementById("panel-restriction").classList.toggle("active", !isLeague);
+      document.getElementById("subtitle").textContent = isLeague
+        ? "See what is blocked for a sports league or inventory preset, and which publishers apply."
+        : "Pick a restriction (e.g. alcohol) to see which leagues and presets you cannot run on.";
+      document.getElementById("results").innerHTML = "";
+      document.getElementById("status").textContent = isLeague
+        ? `${targetOptions.length} targets with restrictions — select one above.`
+        : "Select a restriction to see where you cannot run.";
+    }
+
+    function runLeagueLookup(selectedKey) {
+      const fullKey = selectedKey || document.getElementById("league").value;
+      if (!fullKey) {
+        document.getElementById("status").textContent = "Select a sports league or preset.";
+        document.getElementById("results").innerHTML = "";
+        return;
+      }
+      const target = resolveTarget(fullKey);
+      if (!target) {
+        document.getElementById("status").textContent = "Target not found.";
+        document.getElementById("results").innerHTML = "";
+        return;
+      }
+      const { entry } = target;
+      document.getElementById("status").textContent = `Showing restrictions for ${entry.display_name}`;
+      displayResults(entry.display_name, mergeResults([[fullKey, entry]]));
+    }
+
+    function runRestrictionLookup(options = {}) {
+      let presetId = options.presetId;
+      let query = options.query;
+      let exactValue = options.exactValue;
+
+      const selectVal = document.getElementById("restriction").value;
+      if (!presetId && !query && !exactValue && selectVal) {
+        if (selectVal.startsWith("preset:")) presetId = selectVal.slice(7);
+        if (selectVal.startsWith("exact:")) exactValue = selectVal.slice(6);
+      }
+
+      if (!presetId && !query && !exactValue) {
+        query = document.getElementById("filter-restriction").value.trim();
+      }
+
+      if (!presetId && !query && !exactValue) {
+        document.getElementById("status").textContent = "Select or search for a restriction.";
+        document.getElementById("results").innerHTML = "";
+        return;
+      }
+
+      const result = findRestrictionHits({ presetId, query, exactValue });
+      document.getElementById("status").textContent =
+        result.leagueHits.length
+          ? `Found ${result.leagueHits.length} league(s) blocking ${result.label}.`
+          : `No leagues block ${result.label}.`;
+      document.getElementById("results").innerHTML = renderRestrictionPanel(
+        result.label,
+        result.description,
+        result.matchedTerms,
+        result.leagueHits
+      );
+    }
+
+    function lookupLeagueByQuery(query) {
+      const ruleNameMatches = findRuleNameMatches(query);
+      if (ruleNameMatches.length === 1) {
+        const rule = ruleNameMatches[0].entry.rules[0];
+        document.getElementById("status").textContent = `Showing rule: ${rule.name}`;
+        displayResults(rule.name, resultFromRule(rule));
+        return;
+      }
+
+      const matches = findTargetMatches(query);
+      if (!matches.length && !ruleNameMatches.length) {
+        document.getElementById("status").textContent = `No match found for "${query}".`;
+        document.getElementById("results").innerHTML = "";
+        lastResultsContext = null;
+        return;
+      }
+
+      let merged;
+      let labels;
+      if (ruleNameMatches.length > 1) {
+        const rules = ruleNameMatches.flatMap((m) => m.entry.rules);
+        merged = { ...resultFromRule(rules[0]), rules: getUniqueRules(rules) };
+        for (const r of merged.rules.slice(1)) {
+          const part = resultFromRule(r);
+          for (const f of RESTRICT_FIELDS) {
+            merged[f] = [...new Set([...(merged[f] || []), ...part[f]])].sort((a, b) => a.localeCompare(b));
+          }
+        }
+        merged.rule_count = merged.rules.length;
+        merged.publishers = [...new Set(merged.rules.flatMap((r) => r.publisher || []))].sort();
+        merged.countries = [...new Set(merged.rules.flatMap((r) => r.country || []))].sort();
+        labels = ruleNameMatches.map((m) => m.name).join(", ");
+      } else {
+        labels = matches.map((m) => m.name).join(", ");
+        merged = mergeResults(matches.map((m) => [m.fullKey, targetIndex[m.fullKey].entry]));
+        if (matches.length === 1) document.getElementById("league").value = matches[0].fullKey;
+      }
+
+      document.getElementById("status").textContent = `Showing restrictions for ${labels}`;
+      displayResults(labels, merged);
+    }
+
+    function showRuleById(ruleId) {
+      if (!lastResultsContext) return;
+      const rule = getUniqueRules(lastResultsContext.result.rules).find((r) => r.id === ruleId);
+      if (!rule) return;
+      document.getElementById("status").textContent = `Showing rule: ${rule.name}`;
+      displayResults(rule.name, resultFromRule(rule));
+    }
+
+    document.getElementById("mode-league").addEventListener("click", () => setMode("league"));
+    document.getElementById("mode-restriction").addEventListener("click", () => setMode("restriction"));
+    document.getElementById("go-league").addEventListener("click", () => runLeagueLookup());
+    document.getElementById("go-restriction").addEventListener("click", () => runRestrictionLookup());
+    document.getElementById("league").addEventListener("change", () => runLeagueLookup());
+    document.getElementById("restriction").addEventListener("change", () => runRestrictionLookup());
+
+    document.getElementById("filter-league").addEventListener("input", (e) => {
+      populateLeagueDropdown(e.target.value);
+    });
+    document.getElementById("filter-league").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.target.value.trim()) lookupLeagueByQuery(e.target.value.trim());
+    });
+
+    document.getElementById("filter-restriction").addEventListener("input", (e) => {
+      populateRestrictionDropdown(e.target.value);
+    });
+    document.getElementById("filter-restriction").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") runRestrictionLookup({ query: e.target.value.trim() });
+    });
+
+    document.getElementById("chips-league").addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      document.getElementById("filter-league").value = "";
+      populateLeagueDropdown();
+      lookupLeagueByQuery(chip.dataset.league);
+    });
+
+    document.getElementById("chips-restriction").addEventListener("click", (e) => {
+      const chip = e.target.closest(".chip");
+      if (!chip) return;
+      document.getElementById("restriction").value = `preset:${chip.dataset.restriction}`;
+      document.getElementById("filter-restriction").value = "";
+      runRestrictionLookup({ presetId: chip.dataset.restriction });
+    });
+
+    document.getElementById("results").addEventListener("click", (e) => {
+      const ruleEl = e.target.closest("[data-rule-id]");
+      if (ruleEl) {
+        showRuleById(ruleEl.dataset.ruleId);
+        return;
+      }
+      const countryEl = e.target.closest("[data-country]");
+      if (countryEl) runCountryLookup(countryEl.dataset.country);
+    });
+
+    fetch("irm-lookup.json")
+      .then((r) => r.json())
+      .then((data) => {
+        lookup = data;
+        buildTargetIndex();
+        buildRestrictionCatalog();
+        populateLeagueDropdown();
+        populateRestrictionDropdown();
+
+        document.getElementById("status").textContent =
+          `${targetOptions.length} targets with restrictions — select one above.`;
+
+        const nfl = targetOptions.find((o) => o.key === "nfl football" || o.key === "national football league");
+        if (nfl) {
+          document.getElementById("league").value = nfl.fullKey;
+          runLeagueLookup(nfl.fullKey);
+        }
+      })
+      .catch(() => {
+        document.getElementById("status").textContent =
+          "Could not load irm-lookup.json. Run open-lookup.ps1 from the irm-rules folder.";
+      });
+  </script>
+</body>
+</html>
