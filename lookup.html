@@ -247,10 +247,9 @@
     <h1>Sports League IRM Lookup</h1>
     <p class="sub" id="subtitle">See what is blocked for a sports league or NCAA inventory preset, and which publishers apply.</p>
     <div class="scope-notice">
-      <strong>Scope:</strong> This tool covers <strong>sports league</strong> and <strong>inventory preset</strong> IRM ad-restriction rules only.
-      It does <em>not</em> include publisher-wide blocks (e.g. Fubo exclusions), rating-code rules (e.g. Sexual Health ratings),
-      or series/movie rules (e.g. My Little Pony) unless they share the same sports-league target.
-      For the full IRM rule set, use the
+      <strong>Sports only.</strong> US and global <strong>sports league</strong> and <strong>sports inventory preset</strong> rules
+      (NFL, MLB, NCAA, Wimbledon, US Open, etc.). Excludes LATAM, Portugal, EMEA, series/movie, publisher-wide, and rating-code rules.
+      Full IRM reference:
       <a href="https://docs.google.com/spreadsheets/d/1Oxy3KhssBqde7OtFpzxGhFpwIDCsUMGFH6-70LMfal0/edit?gid=950546083" target="_blank" rel="noopener noreferrer">IRM Rules spreadsheet</a>.
     </div>
 
@@ -282,6 +281,8 @@
         <span class="chip" data-league="excluding acc">NCAA · Excl. ACC</span>
         <span class="chip" data-league="spanish laliga">LaLiga</span>
         <span class="chip" data-league="pga tour">PGA Tour</span>
+        <span class="chip" data-league="tennis - wimbledon">Wimbledon</span>
+        <span class="chip" data-league="us open (tennis)">US Open</span>
       </div>
     </div>
 
@@ -323,11 +324,13 @@
       acc: ["college sports ncaa - acc network", "acc network", "ncaa acc"],
       "nfl flag": ["nfl flag championships", "nfl flag football"],
       "anz nfl": ["sports | anz | nfl", "anz nfl"],
+      wimbledon: ["tennis - wimbledon", "wimbledon (tennis)"],
+      "us open": ["us open (tennis)"],
     };
 
     const TARGET_SOURCES = [
       { dimension: "sports_league", group: "Sports leagues", prefix: "league:" },
-      { dimension: "inventory_preset", group: "Inventory presets (NCAA, etc.)", prefix: "preset:" },
+      { dimension: "inventory_preset", group: "Sports presets & events (NCAA, Tennis, etc.)", prefix: "preset:" },
     ];
 
     const RESTRICTION_PRESETS = [
@@ -404,6 +407,7 @@
     let targetIndex = {};
     let restrictionCatalog = [];
     let sportsLeagueRuleIds = new Set();
+    let countryIndex = {};
     let currentMode = "league";
     let lastResultsContext = null;
 
@@ -480,8 +484,8 @@
     }
 
     function findRuleById(ruleId) {
-      for (const dim of Object.values(lookup || {})) {
-        for (const entry of Object.values(dim)) {
+      for (const { dimension } of TARGET_SOURCES) {
+        for (const entry of Object.values(lookup[dimension] || {})) {
           for (const rule of entry.rules || []) {
             if (rule.id === ruleId) return rule;
           }
@@ -529,6 +533,24 @@
       targetOptions.sort((a, b) =>
         a.group.localeCompare(b.group) || a.name.localeCompare(b.name)
       );
+      buildCountryIndex();
+    }
+
+    function buildCountryIndex() {
+      countryIndex = {};
+      for (const { dimension } of TARGET_SOURCES) {
+        for (const entry of Object.values(lookup[dimension] || {})) {
+          for (const rule of entry.rules || []) {
+            for (const country of rule.country || []) {
+              const key = country.toLowerCase().trim();
+              if (!countryIndex[key]) {
+                countryIndex[key] = { display_name: country, rules: new Map() };
+              }
+              countryIndex[key].rules.set(rule.id, rule);
+            }
+          }
+        }
+      }
     }
 
     function getAllTargetEntries() {
@@ -657,23 +679,29 @@
     }
 
     function findCountryEntry(countryName) {
-      const dim = lookup.country || {};
       const q = countryName.toLowerCase().trim();
-      const key = Object.keys(dim).find(
-        (k) => k === q || dim[k].display_name.toLowerCase() === q
-      );
-      return key ? { key, entry: dim[key] } : null;
+      const hit = countryIndex[q];
+      if (!hit) return null;
+      const rules = [...hit.rules.values()];
+      return {
+        key: q,
+        entry: {
+          display_name: hit.display_name,
+          rules,
+          rule_count: rules.length,
+        },
+      };
     }
 
     function runCountryLookup(countryName) {
       const found = findCountryEntry(countryName);
       if (!found) {
-        document.getElementById("status").textContent = `No IRM rules found for country "${countryName}".`;
+        document.getElementById("status").textContent = `No sports IRM rules found for country "${countryName}".`;
         return;
       }
 
       const { entry } = found;
-      let rules = getUniqueRules(entry.rules || []).filter((r) => sportsLeagueRuleIds.has(r.id));
+      let rules = getUniqueRules(entry.rules || []);
 
       if (lastResultsContext?.view === "league" && lastResultsContext.result?.rules?.length) {
         const contextIds = new Set(getUniqueRules(lastResultsContext.result.rules).map((r) => r.id));
@@ -834,10 +862,17 @@
     function findRuleNameMatches(query) {
       const q = query.toLowerCase().trim();
       if (!q) return [];
-      const dim = lookup.rule_name || {};
-      return Object.entries(dim)
-        .filter(([k, v]) => k.includes(q) || v.display_name.toLowerCase().includes(q))
-        .map(([k, v]) => ({ key: k, name: v.display_name, entry: v }));
+      const hits = new Map();
+      for (const { dimension } of TARGET_SOURCES) {
+        for (const [key, entry] of Object.entries(lookup[dimension] || {})) {
+          for (const rule of entry.rules || []) {
+            if (rule.name.toLowerCase().includes(q) || key.includes(q)) {
+              hits.set(rule.id, { key, name: rule.name, entry });
+            }
+          }
+        }
+      }
+      return [...hits.values()];
     }
 
     function findTargetMatches(query) {
@@ -1051,7 +1086,8 @@
     function lookupLeagueByQuery(query) {
       const ruleNameMatches = findRuleNameMatches(query);
       if (ruleNameMatches.length === 1) {
-        const rule = ruleNameMatches[0].entry.rules[0];
+        const hit = ruleNameMatches[0];
+        const rule = hit.entry.rules.find((r) => r.name === hit.name) || hit.entry.rules[0];
         clearLeagueControls();
         document.getElementById("status").textContent = `Showing rule: ${rule.name}`;
         displayResults(rule.name, resultFromRule(rule), "rule");

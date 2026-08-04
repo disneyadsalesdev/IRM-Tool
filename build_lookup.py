@@ -3,6 +3,7 @@ import json
 import os
 import re
 import sys
+import uuid
 from collections import defaultdict
 
 import pandas as pd
@@ -20,6 +21,9 @@ INV_COLS = {
     "entity_type": "ENTITY_TYPE",
     "event": "EVENT",
 }
+
+# Dimensions exported to the sports-only lookup UI.
+INDEX_DIMENSIONS = ("sports_league", "inventory_preset")
 
 RESTRICT_FIELDS = [
     ("excluded_brands", "AdRestrictions_exclude BRAND"),
@@ -49,6 +53,22 @@ EMPTY_BUCKET = {
     "rules": [],
 }
 
+LATAM_COUNTRIES = frozenset(
+    {"argentina", "peru", "chile", "mexico", "colombia", "brazil"}
+)
+
+SPORTS_PRESET_PATTERNS = re.compile(
+    r"college sports ncaa|little league|special olympics|nfl flag|mlb tv|inside the nba|tennis|wimbledon|us open",
+    re.I,
+)
+
+NON_SPORTS_PRESET_PATTERNS = re.compile(
+    r"emea|portugal|latam|my little pony|diageo|mandalorian|vanderpump|mormon|creaturette|grogu|"
+    r"tune-in content partner|ad selector|diageo restrictions|rip restrictions|critically acclaimed|"
+    r"larger than life|lollapalooza|secret lives|star wars|robody",
+    re.I,
+)
+
 
 def split_vals(val):
     if pd.isna(val) or str(val).strip() == "":
@@ -56,7 +76,6 @@ def split_vals(val):
     return [v.strip() for v in str(val).split(",") if v.strip()]
 
 
-# Split multi-industry cells on comma only at industry boundaries (not internal commas).
 INDUSTRY_BOUNDARY = re.compile(
     r",\s+(?=(?:"
     r"CPG-|Entertainment-|Financial Services-|Health-|POLITICAL-|Political[\s\-–]"
@@ -113,8 +132,57 @@ def parse_exceptions(val):
     return sorted(normalized, key=str.lower)
 
 
+def is_excluded_region(row, inv):
+    """Drop international / non-US-sports regional rules (LATAM, Portugal, EMEA, etc.)."""
+    name = str(row.get("Rule Name", "")).lower()
+    if any(token in name for token in ("| latam |", "latam |", "| brazil |", "portugal", "| emea")):
+        return True
+
+    countries = [c.lower() for c in inv.get("country", [])]
+    if countries and not any(c == "united states" for c in countries):
+        if all(c in LATAM_COUNTRIES for c in countries):
+            return True
+
+    for preset in inv.get("inventory_preset", []):
+        if NON_SPORTS_PRESET_PATTERNS.search(preset):
+            return True
+
+    return False
+
+
+def has_sports_inventory(inv):
+    if inv.get("sports_league"):
+        return True
+    for preset in inv.get("inventory_preset", []):
+        if SPORTS_PRESET_PATTERNS.search(preset):
+            return True
+    return False
+
+
+def is_sports_rule(row, inv):
+    if is_excluded_region(row, inv):
+        return False
+    if not has_sports_inventory(inv):
+        return False
+    return has_restrictions_row(row, inv)
+
+
+def has_restrictions_row(row, inv, entry=None):
+    if entry is not None:
+        return has_restrictions(entry)
+    restrict_cols = [col for _, col in RESTRICT_FIELDS]
+    if any(split_restrictions(field, row.get(col)) for field, col in RESTRICT_FIELDS):
+        return True
+    return bool(parse_exceptions(row.get("AdRestrictions Exceptions")))
+
+
+def has_restrictions(entry):
+    list_fields = [f for f in EMPTY_BUCKET if f != "rules"]
+    return any(entry[f] for f in list_fields)
+
+
 def add_to_index(index, key_type, key_val, entry):
-    if not key_val:
+    if not key_val or key_type not in INDEX_DIMENSIONS:
         return
     bucket = index[key_type]
     k = key_val.lower()
@@ -133,7 +201,8 @@ def add_to_index(index, key_type, key_val, entry):
 def serialize_index(idx):
     list_fields = [f for f in EMPTY_BUCKET if f != "rules"]
     out = {}
-    for dim, buckets in idx.items():
+    for dim in INDEX_DIMENSIONS:
+        buckets = idx.get(dim, {})
         out[dim] = {}
         for _k, v in sorted(buckets.items(), key=lambda x: x[1]["display_name"].lower()):
             serialized = {
@@ -147,29 +216,68 @@ def serialize_index(idx):
     return out
 
 
-def has_restrictions(entry):
-    list_fields = [f for f in EMPTY_BUCKET if f != "rules"]
-    return any(entry[f] for f in list_fields)
+def load_supplemental_rules(path):
+    if not os.path.isfile(path):
+        return []
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    return data.get("rules", [])
+
+
+def supplemental_to_entry(rule_def):
+    entry = {field: set(rule_def.get(field, [])) for field in EMPTY_BUCKET if field != "rules"}
+    entry["exceptions"] = set(parse_exceptions_from_list(rule_def.get("exceptions", [])))
+    rule_summary = {
+        "id": rule_def.get("id") or str(uuid.uuid4()),
+        "name": rule_def["name"],
+        "publisher": rule_def.get("publisher", []),
+        "country": rule_def.get("country", []),
+        "notes": rule_def.get("notes", ""),
+        "excluded_industries": sorted(entry["excluded_industries"], key=str.lower),
+        "excluded_asset_tags": sorted(entry["excluded_asset_tags"], key=str.lower),
+        "excluded_brands": sorted(entry["excluded_brands"], key=str.lower),
+        "exceptions": sorted(entry["exceptions"], key=str.lower),
+    }
+    entry["rule_summary"] = rule_summary
+    return entry, rule_def
+
+
+def parse_exceptions_from_list(items):
+    if not items:
+        return []
+    if len(items) == 1 and isinstance(items[0], str) and "=" not in items[0]:
+        return parse_exceptions(items[0])
+    out = []
+    for item in items:
+        out.extend(parse_exceptions(item))
+    return out
 
 
 def main():
     xlsx_path = sys.argv[1] if len(sys.argv) > 1 else r"c:\Users\syeda012\Downloads\IRM_Rules.xlsx"
     out_dir = os.path.dirname(os.path.abspath(__file__))
+    supplemental_path = os.path.join(out_dir, "supplemental-rules.json")
 
     df = pd.read_excel(xlsx_path, sheet_name="IRM_Rules")
     df = df[df["Status"] == "ENABLED"].copy()
 
     index = defaultdict(dict)
     all_rules = []
+    skipped = 0
 
     for _, row in df.iterrows():
         entry = {field: split_restrictions(field, row.get(col)) for field, col in RESTRICT_FIELDS}
-        entry["exceptions"] = parse_exceptions(row.get("AdRestrictions Exceptions"))
+        entry = {field: set(vals) for field, vals in entry.items()}
+        entry["exceptions"] = set(parse_exceptions(row.get("AdRestrictions Exceptions")))
 
         if not has_restrictions(entry):
             continue
 
         inv = {k: split_vals(row.get(col)) for k, col in INV_COLS.items()}
+
+        if not is_sports_rule(row, inv):
+            skipped += 1
+            continue
 
         rule_summary = {
             "id": row["ID"],
@@ -177,22 +285,31 @@ def main():
             "publisher": inv.get("publisher", []),
             "country": inv.get("country", []),
             "notes": str(row.get("Notes", "")) if pd.notna(row.get("Notes")) else "",
-            "excluded_industries": entry["excluded_industries"],
-            "excluded_asset_tags": entry["excluded_asset_tags"],
-            "excluded_brands": entry["excluded_brands"],
-            "exceptions": entry["exceptions"],
+            "excluded_industries": sorted(entry["excluded_industries"], key=str.lower),
+            "excluded_asset_tags": sorted(entry["excluded_asset_tags"], key=str.lower),
+            "excluded_brands": sorted(entry["excluded_brands"], key=str.lower),
+            "exceptions": sorted(entry["exceptions"], key=str.lower),
         }
 
         entry["rule_summary"] = rule_summary
-        all_rules.append({**entry, "inventory": inv})
+        all_rules.append({**{f: list(entry[f]) for f in EMPTY_BUCKET if f != "rules"}, "inventory": inv})
 
-        for dim, vals in inv.items():
-            for v in vals:
+        for dim in INDEX_DIMENSIONS:
+            for v in inv.get(dim, []):
                 add_to_index(index, dim, v, entry)
 
-        rn = str(row.get("Rule Name", "")).strip()
-        if rn:
-            add_to_index(index, "rule_name", rn, entry)
+    for rule_def in load_supplemental_rules(supplemental_path):
+        entry, meta = supplemental_to_entry(rule_def)
+        if not has_restrictions(entry):
+            continue
+        all_rules.append(entry)
+        target_dim = meta.get("target_dimension", "inventory_preset")
+        target_key = meta.get("target_key") or meta.get("display_target")
+        display = meta.get("display_target") or target_key
+        add_to_index(index, target_dim, target_key, entry)
+        if display.lower() != target_key.lower():
+            bucket = index[target_dim][target_key.lower()]
+            bucket["display_name"] = display
 
     serialized = serialize_index(index)
 
@@ -201,8 +318,10 @@ def main():
         json.dump(serialized, f, indent=2, ensure_ascii=False)
 
     print(f"Wrote {lookup_path}")
-    print(f"Rules with ad restrictions: {len(all_rules)}")
-    print(f"Index dimensions: {', '.join(sorted(serialized.keys()))}")
+    print(f"Sports rules indexed: {len(all_rules)}")
+    print(f"Skipped non-sports / regional rules: {skipped}")
+    print(f"Sports leagues: {len(serialized.get('sports_league', {}))}")
+    print(f"Inventory presets: {len(serialized.get('inventory_preset', {}))}")
 
 
 if __name__ == "__main__":
