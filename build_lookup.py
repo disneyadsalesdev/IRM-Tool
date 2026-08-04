@@ -88,8 +88,29 @@ def parse_exceptions(val):
     if pd.isna(val) or str(val).strip() == "":
         return []
     text = str(val).strip()
-    parts = re.split(r",\s*(?=[A-Z_]+=)", text)
-    return [p.strip() for p in parts if p.strip()]
+    parts = re.split(
+        r",\s*(?=(?:BRAND|INDUSTRY|ASSET_TAG|AD_PRODUCT|AGENCY)=)",
+        text,
+        flags=re.I,
+    )
+    normalized = []
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        match = re.match(r"^(BRAND|INDUSTRY|ASSET_TAG|AD_PRODUCT|AGENCY)=(.+)$", part, re.I)
+        if match:
+            typ, rest = match.group(1).upper(), match.group(2).strip()
+            if typ == "BRAND" and "," in rest:
+                brands = sorted(
+                    [b.strip() for b in rest.split(",") if b.strip()],
+                    key=str.lower,
+                )
+                part = f"{typ}={', '.join(brands)}"
+            else:
+                part = f"{typ}={rest}"
+        normalized.append(part)
+    return sorted(normalized, key=str.lower)
 
 
 def add_to_index(index, key_type, key_val, entry):

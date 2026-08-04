@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IRM Rules Lookup</title>
+  <title>Sports League IRM Lookup</title>
   <style>
     :root {
       --bg: #0f1117;
@@ -26,7 +26,29 @@
     }
     .wrap { max-width: 960px; margin: 0 auto; padding: 24px 20px 48px; }
     h1 { font-size: 1.5rem; font-weight: 600; margin: 0 0 4px; }
-    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+    .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+    .scope-notice {
+      background: #1e2433;
+      border: 1px solid var(--border);
+      border-left: 3px solid #fbbf24;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.45;
+    }
+    .scope-notice strong { color: var(--text); }
+    .scope-notice a { color: var(--accent); }
+    .panel-banner {
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
     .mode-toggle {
       display: inline-flex;
       background: var(--surface);
@@ -222,8 +244,15 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>IRM Rules Lookup</h1>
-    <p class="sub" id="subtitle">See what is blocked for a sports league and which publishers the rule applies to.</p>
+    <h1>Sports League IRM Lookup</h1>
+    <p class="sub" id="subtitle">See what is blocked for a sports league or NCAA inventory preset, and which publishers apply.</p>
+    <div class="scope-notice">
+      <strong>Scope:</strong> This tool covers <strong>sports league</strong> and <strong>inventory preset</strong> IRM ad-restriction rules only.
+      It does <em>not</em> include publisher-wide blocks (e.g. Fubo exclusions), rating-code rules (e.g. Sexual Health ratings),
+      or series/movie rules (e.g. My Little Pony) unless they share the same sports-league target.
+      For the full IRM rule set, use the
+      <a href="https://docs.google.com/spreadsheets/d/1Oxy3KhssBqde7OtFpzxGhFpwIDCsUMGFH6-70LMfal0/edit?gid=950546083" target="_blank" rel="noopener noreferrer">IRM Rules spreadsheet</a>.
+    </div>
 
     <div class="mode-toggle" role="tablist">
       <button type="button" id="mode-league" class="active" role="tab" aria-selected="true">By sports league</button>
@@ -374,8 +403,37 @@
     let targetOptions = [];
     let targetIndex = {};
     let restrictionCatalog = [];
+    let sportsLeagueRuleIds = new Set();
     let currentMode = "league";
     let lastResultsContext = null;
+
+    const IRM_REFERENCE_SHEET =
+      "https://docs.google.com/spreadsheets/d/1Oxy3KhssBqde7OtFpzxGhFpwIDCsUMGFH6-70LMfal0/edit?gid=950546083";
+
+    function sortAlpha(items) {
+      return [...(items || [])].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+    }
+
+    function normalizeException(ex) {
+      const match = String(ex).match(/^(BRAND|INDUSTRY|ASSET_TAG|AD_PRODUCT|AGENCY)=(.+)$/i);
+      if (!match) return String(ex);
+      const typ = match[1].toUpperCase();
+      const rest = match[2].trim();
+      if (typ === "BRAND" && rest.includes(",")) {
+        const brands = sortAlpha(rest.split(",").map((b) => b.trim()).filter(Boolean));
+        return `${typ}=${brands.join(", ")}`;
+      }
+      return `${typ}=${rest}`;
+    }
+
+    function sortExceptions(exceptions) {
+      return sortAlpha((exceptions || []).map(normalizeException));
+    }
+
+    function ruleIncludesCountry(rule, countryName) {
+      const q = countryName.toLowerCase().trim();
+      return (rule.country || []).some((c) => c.toLowerCase() === q);
+    }
 
     function getUniqueRules(rules) {
       const byId = new Map();
@@ -386,7 +444,7 @@
     }
 
     function resultFromRule(rule) {
-      const sort = (arr) => [...(arr || [])].sort((a, b) => a.localeCompare(b));
+      const sort = sortAlpha;
       return {
         rule_count: 1,
         rules: [rule],
@@ -402,7 +460,7 @@
         included_asset_tags: sort(rule.included_asset_tags),
         included_ad_products: sort(rule.included_ad_products),
         included_agencies: sort(rule.included_agencies),
-        exceptions: sort(rule.exceptions),
+        exceptions: sortExceptions(rule.exceptions),
       };
     }
 
@@ -416,9 +474,26 @@
       return renderLeaguePanel(label, result);
     }
 
-    function displayResults(label, result) {
-      lastResultsContext = { label, result };
+    function displayResults(label, result, view = "league") {
+      lastResultsContext = { label, result, view };
       document.getElementById("results").innerHTML = renderResultsContent(label, result);
+    }
+
+    function findRuleById(ruleId) {
+      for (const dim of Object.values(lookup || {})) {
+        for (const entry of Object.values(dim)) {
+          for (const rule of entry.rules || []) {
+            if (rule.id === ruleId) return rule;
+          }
+        }
+      }
+      return null;
+    }
+
+    function clearLeagueControls() {
+      document.getElementById("filter-league").value = "";
+      document.getElementById("league").value = "";
+      populateLeagueDropdown("");
     }
 
     function restrictionCount(entry) {
@@ -430,11 +505,13 @@
     function buildTargetIndex() {
       targetOptions = [];
       targetIndex = {};
+      sportsLeagueRuleIds = new Set();
 
       for (const { dimension, group, prefix } of TARGET_SOURCES) {
         const dim = lookup[dimension] || {};
         for (const [key, entry] of Object.entries(dim)) {
           if (!hasRestrictions(entry)) continue;
+          for (const rule of entry.rules || []) sportsLeagueRuleIds.add(rule.id);
           const fullKey = `${prefix}${key}`;
           const ruleNames = (entry.rules || []).map((r) => r.name).join(" ");
           targetIndex[fullKey] = { entry, dimension, key, group };
@@ -497,6 +574,34 @@
       return items;
     }
 
+    function mergeFromRuleList(rules) {
+      const merged = Object.fromEntries(RESTRICT_FIELDS.map((f) => [f, new Set()]));
+      merged.rules = [];
+      merged.publishers = new Set();
+      merged.countries = new Set();
+
+      for (const r of rules) {
+        for (const f of RESTRICT_FIELDS) (r[f] || []).forEach((x) => merged[f].add(x));
+        merged.rules.push(r);
+        (r.publisher || []).forEach((p) => merged.publishers.add(p));
+        (r.country || []).forEach((c) => merged.countries.add(c));
+      }
+
+      const result = Object.fromEntries(
+        RESTRICT_FIELDS.map((f) => [
+          f,
+          f === "exceptions"
+            ? sortExceptions([...merged[f]])
+            : sortAlpha([...merged[f]]),
+        ])
+      );
+      result.rule_count = merged.rules.length;
+      result.rules = merged.rules;
+      result.publishers = sortAlpha([...merged.publishers]);
+      result.countries = sortAlpha([...merged.countries]);
+      return result;
+    }
+
     function mergeResults(matches) {
       const merged = Object.fromEntries(RESTRICT_FIELDS.map((f) => [f, new Set()]));
       merged.rules = [];
@@ -513,7 +618,12 @@
       }
 
       const result = Object.fromEntries(
-        RESTRICT_FIELDS.map((f) => [f, [...merged[f]].sort((a, b) => a.localeCompare(b))])
+        RESTRICT_FIELDS.map((f) => [
+          f,
+          f === "exceptions"
+            ? sortExceptions([...merged[f]])
+            : sortAlpha([...merged[f]]),
+        ])
       );
       result.rule_count = merged.rules.length;
       result.rules = merged.rules;
@@ -561,27 +671,65 @@
         document.getElementById("status").textContent = `No IRM rules found for country "${countryName}".`;
         return;
       }
+
       const { entry } = found;
-      const result = mergeResults([[found.key, entry]]);
-      document.getElementById("status").textContent = `Showing all IRM restrictions for ${entry.display_name}`;
-      document.getElementById("results").innerHTML = renderCountryPanel(entry.display_name, result);
+      let rules = getUniqueRules(entry.rules || []).filter((r) => sportsLeagueRuleIds.has(r.id));
+
+      if (lastResultsContext?.view === "league" && lastResultsContext.result?.rules?.length) {
+        const contextIds = new Set(getUniqueRules(lastResultsContext.result.rules).map((r) => r.id));
+        const scoped = rules.filter((r) => contextIds.has(r.id) && ruleIncludesCountry(r, countryName));
+        if (scoped.length) {
+          const scopedResult = mergeFromRuleList(scoped);
+          const label = `${entry.display_name} · ${lastResultsContext.label}`;
+          document.getElementById("status").textContent =
+            `Showing ${entry.display_name} restrictions for ${lastResultsContext.label}`;
+          document.getElementById("results").innerHTML = renderCountryPanel(label, scopedResult, {
+            banner: `Filtered to ${lastResultsContext.label} rules in ${entry.display_name}.`,
+            scoped: true,
+          });
+          lastResultsContext = { label, result: scopedResult, view: "country-scoped" };
+          document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+      }
+
+      if (!rules.length) {
+        document.getElementById("status").textContent =
+          `No sports-league IRM rules found for ${entry.display_name}.`;
+        document.getElementById("results").innerHTML = "";
+        return;
+      }
+
+      const result = mergeFromRuleList(rules);
+      document.getElementById("status").textContent =
+        `Showing sports-league IRM restrictions for ${entry.display_name}`;
+      document.getElementById("results").innerHTML = renderCountryPanel(entry.display_name, result, {
+        banner:
+          "Sports league and inventory preset rules only. Publisher-wide, rating, and series/movie rules are excluded.",
+      });
+      lastResultsContext = { label: entry.display_name, result, view: "country" };
       document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    function renderCountryPanel(label, result) {
+    function renderCountryPanel(label, result, opts = {}) {
+      const { banner = "", scoped = false } = opts;
       const seen = new Set();
       const ruleLines = [];
-      for (const r of result.rules) {
-        if (seen.has(r.name)) continue;
-        seen.add(r.name);
+      for (const r of getUniqueRules(result.rules)) {
+        if (seen.has(r.id)) continue;
+        seen.add(r.id);
         const pubs = r.publisher?.length ? r.publisher.join(", ") : "All publishers on rule";
-        ruleLines.push(`${escapeHtml(r.name)} · ${escapeHtml(pubs)}`);
+        ruleLines.push(
+          `<button type="button" class="link-country rule-link" data-rule-id="${escapeHtml(r.id)}">${escapeHtml(r.name)}</button>` +
+          ` · ${escapeHtml(pubs)}`
+        );
       }
 
       return `
         <div class="panel">
           <h2>Country: ${escapeHtml(label)}</h2>
-          <p class="meta">${result.rule_count} rule(s) apply in this country</p>
+          <p class="meta">${result.rule_count} sports-league rule(s)${scoped ? " for this target" : ""}</p>
+          ${banner ? `<div class="panel-banner">${escapeHtml(banner)}</div>` : ""}
           <div class="context-box">
             <h3>Publishers in scope</h3>
             ${renderPills(result.publishers)}
@@ -590,7 +738,7 @@
           ${result.excluded_industries.length ? `<div class="section"><h3 class="blocked">Blocked industries (${result.excluded_industries.length})</h3>${renderList(result.excluded_industries, "blocked")}</div>` : ""}
           ${result.excluded_asset_tags.length ? `<div class="section"><h3 class="blocked">Blocked asset tags (${result.excluded_asset_tags.length})</h3>${renderList(result.excluded_asset_tags, "blocked")}</div>` : ""}
           ${result.exceptions.length ? `<div class="section"><h3 class="allowed">Exceptions (still allowed)</h3>${renderList(result.exceptions, "allowed")}</div>` : ""}
-          ${ruleLines.length ? `<div class="section rules"><h3>Source rules (${ruleLines.length})</h3><ul>${ruleLines.slice(0, 50).map((l) => `<li>${l}</li>`).join("")}${ruleLines.length > 50 ? `<li>…and ${ruleLines.length - 50} more</li>` : ""}</ul></div>` : ""}
+          ${ruleLines.length ? `<div class="section rules"><h3>Source rules — click to view individually</h3><ul>${ruleLines.slice(0, 50).map((l) => `<li>${l}</li>`).join("")}${ruleLines.length > 50 ? `<li>…and ${ruleLines.length - 50} more</li>` : ""}</ul></div>` : ""}
         </div>`;
     }
 
@@ -840,8 +988,8 @@
       document.getElementById("panel-league").classList.toggle("active", isLeague);
       document.getElementById("panel-restriction").classList.toggle("active", !isLeague);
       document.getElementById("subtitle").textContent = isLeague
-        ? "See what is blocked for a sports league or inventory preset, and which publishers apply."
-        : "Pick a restriction (e.g. alcohol) to see which leagues and presets you cannot run on.";
+        ? "See what is blocked for a sports league or NCAA inventory preset, and which publishers apply."
+        : "Pick a restriction (e.g. alcohol) to see which sports leagues and presets you cannot run on.";
       document.getElementById("results").innerHTML = "";
       document.getElementById("status").textContent = isLeague
         ? `${targetOptions.length} targets with restrictions — select one above.`
@@ -863,7 +1011,7 @@
       }
       const { entry } = target;
       document.getElementById("status").textContent = `Showing restrictions for ${entry.display_name}`;
-      displayResults(entry.display_name, mergeResults([[fullKey, entry]]));
+      displayResults(entry.display_name, mergeResults([[fullKey, entry]]), "league");
     }
 
     function runRestrictionLookup(options = {}) {
@@ -904,8 +1052,9 @@
       const ruleNameMatches = findRuleNameMatches(query);
       if (ruleNameMatches.length === 1) {
         const rule = ruleNameMatches[0].entry.rules[0];
+        clearLeagueControls();
         document.getElementById("status").textContent = `Showing rule: ${rule.name}`;
-        displayResults(rule.name, resultFromRule(rule));
+        displayResults(rule.name, resultFromRule(rule), "rule");
         return;
       }
 
@@ -925,29 +1074,44 @@
         for (const r of merged.rules.slice(1)) {
           const part = resultFromRule(r);
           for (const f of RESTRICT_FIELDS) {
-            merged[f] = [...new Set([...(merged[f] || []), ...part[f]])].sort((a, b) => a.localeCompare(b));
+            merged[f] = f === "exceptions"
+              ? sortExceptions([...(merged[f] || []), ...part[f]])
+              : sortAlpha([...(merged[f] || []), ...part[f]]);
           }
         }
         merged.rule_count = merged.rules.length;
-        merged.publishers = [...new Set(merged.rules.flatMap((r) => r.publisher || []))].sort();
-        merged.countries = [...new Set(merged.rules.flatMap((r) => r.country || []))].sort();
+        merged.publishers = sortAlpha([...new Set(merged.rules.flatMap((r) => r.publisher || []))]);
+        merged.countries = sortAlpha([...new Set(merged.rules.flatMap((r) => r.country || []))]);
         labels = ruleNameMatches.map((m) => m.name).join(", ");
+        clearLeagueControls();
       } else {
         labels = matches.map((m) => m.name).join(", ");
         merged = mergeResults(matches.map((m) => [m.fullKey, targetIndex[m.fullKey].entry]));
-        if (matches.length === 1) document.getElementById("league").value = matches[0].fullKey;
+        document.getElementById("filter-league").value = "";
+        if (matches.length === 1) {
+          document.getElementById("league").value = matches[0].fullKey;
+        } else {
+          document.getElementById("league").value = "";
+        }
+        populateLeagueDropdown("");
       }
 
       document.getElementById("status").textContent = `Showing restrictions for ${labels}`;
-      displayResults(labels, merged);
+      displayResults(labels, merged, "league");
     }
 
     function showRuleById(ruleId) {
-      if (!lastResultsContext) return;
-      const rule = getUniqueRules(lastResultsContext.result.rules).find((r) => r.id === ruleId);
+      const rule =
+        (lastResultsContext &&
+          getUniqueRules(lastResultsContext.result.rules).find((r) => r.id === ruleId)) ||
+        findRuleById(ruleId);
       if (!rule) return;
+
+      if (currentMode !== "league") setMode("league");
+      clearLeagueControls();
+
       document.getElementById("status").textContent = `Showing rule: ${rule.name}`;
-      displayResults(rule.name, resultFromRule(rule));
+      displayResults(rule.name, resultFromRule(rule), "rule");
     }
 
     document.getElementById("mode-league").addEventListener("click", () => setMode("league"));
@@ -974,8 +1138,7 @@
     document.getElementById("chips-league").addEventListener("click", (e) => {
       const chip = e.target.closest(".chip");
       if (!chip) return;
-      document.getElementById("filter-league").value = "";
-      populateLeagueDropdown();
+      clearLeagueControls();
       lookupLeagueByQuery(chip.dataset.league);
     });
 
