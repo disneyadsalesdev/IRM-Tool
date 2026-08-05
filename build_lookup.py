@@ -70,10 +70,30 @@ NON_SPORTS_PRESET_PATTERNS = re.compile(
 )
 
 
+def dedupe_strings(items):
+    """Keep one entry per value, case-insensitive."""
+    seen = set()
+    out = []
+    for item in items or []:
+        text = str(item).strip()
+        if not text:
+            continue
+        key = text.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(text)
+    return out
+
+
+def dedupe_sorted(items):
+    return sorted(dedupe_strings(items), key=str.lower)
+
+
 def split_vals(val):
     if pd.isna(val) or str(val).strip() == "":
         return []
-    return [v.strip() for v in str(val).split(",") if v.strip()]
+    return dedupe_strings([v.strip() for v in str(val).split(",") if v.strip()])
 
 
 INDUSTRY_BOUNDARY = re.compile(
@@ -121,15 +141,12 @@ def parse_exceptions(val):
         if match:
             typ, rest = match.group(1).upper(), match.group(2).strip()
             if typ == "BRAND" and "," in rest:
-                brands = sorted(
-                    [b.strip() for b in rest.split(",") if b.strip()],
-                    key=str.lower,
-                )
+                brands = dedupe_sorted([b.strip() for b in rest.split(",") if b.strip()])
                 part = f"{typ}={', '.join(brands)}"
             else:
                 part = f"{typ}={rest}"
         normalized.append(part)
-    return sorted(normalized, key=str.lower)
+    return dedupe_sorted(normalized)
 
 
 def is_excluded_region(row, inv):
@@ -193,7 +210,9 @@ def add_to_index(index, key_type, key_val, entry):
 
     for field in EMPTY_BUCKET:
         if field == "rules":
-            bucket[k]["rules"].append(entry["rule_summary"])
+            rule = entry["rule_summary"]
+            if not any(r["id"] == rule["id"] for r in bucket[k]["rules"]):
+                bucket[k]["rules"].append(rule)
         else:
             bucket[k][field].update(entry[field])
 
@@ -211,7 +230,7 @@ def serialize_index(idx):
                 "rules": v["rules"],
             }
             for field in list_fields:
-                serialized[field] = sorted(v[field], key=str.lower)
+                serialized[field] = dedupe_sorted(v[field])
             out[dim][_k] = serialized
     return out
 
@@ -225,18 +244,22 @@ def load_supplemental_rules(path):
 
 
 def supplemental_to_entry(rule_def):
-    entry = {field: set(rule_def.get(field, [])) for field in EMPTY_BUCKET if field != "rules"}
-    entry["exceptions"] = set(parse_exceptions_from_list(rule_def.get("exceptions", [])))
+    entry = {
+        field: set(dedupe_strings(rule_def.get(field, [])))
+        for field in EMPTY_BUCKET
+        if field != "rules"
+    }
+    entry["exceptions"] = set(dedupe_strings(parse_exceptions_from_list(rule_def.get("exceptions", []))))
     rule_summary = {
         "id": rule_def.get("id") or str(uuid.uuid4()),
         "name": rule_def["name"],
-        "publisher": rule_def.get("publisher", []),
-        "country": rule_def.get("country", []),
+        "publisher": dedupe_sorted(rule_def.get("publisher", [])),
+        "country": dedupe_sorted(rule_def.get("country", [])),
         "notes": rule_def.get("notes", ""),
-        "excluded_industries": sorted(entry["excluded_industries"], key=str.lower),
-        "excluded_asset_tags": sorted(entry["excluded_asset_tags"], key=str.lower),
-        "excluded_brands": sorted(entry["excluded_brands"], key=str.lower),
-        "exceptions": sorted(entry["exceptions"], key=str.lower),
+        "excluded_industries": dedupe_sorted(entry["excluded_industries"]),
+        "excluded_asset_tags": dedupe_sorted(entry["excluded_asset_tags"]),
+        "excluded_brands": dedupe_sorted(entry["excluded_brands"]),
+        "exceptions": dedupe_sorted(entry["exceptions"]),
     }
     entry["rule_summary"] = rule_summary
     return entry, rule_def
@@ -282,13 +305,13 @@ def main():
         rule_summary = {
             "id": row["ID"],
             "name": row["Rule Name"],
-            "publisher": inv.get("publisher", []),
-            "country": inv.get("country", []),
+            "publisher": dedupe_sorted(inv.get("publisher", [])),
+            "country": dedupe_sorted(inv.get("country", [])),
             "notes": str(row.get("Notes", "")) if pd.notna(row.get("Notes")) else "",
-            "excluded_industries": sorted(entry["excluded_industries"], key=str.lower),
-            "excluded_asset_tags": sorted(entry["excluded_asset_tags"], key=str.lower),
-            "excluded_brands": sorted(entry["excluded_brands"], key=str.lower),
-            "exceptions": sorted(entry["exceptions"], key=str.lower),
+            "excluded_industries": dedupe_sorted(entry["excluded_industries"]),
+            "excluded_asset_tags": dedupe_sorted(entry["excluded_asset_tags"]),
+            "excluded_brands": dedupe_sorted(entry["excluded_brands"]),
+            "exceptions": dedupe_sorted(entry["exceptions"]),
         }
 
         entry["rule_summary"] = rule_summary

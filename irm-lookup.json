@@ -8,11 +8,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -137,11 +137,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -308,9 +308,9 @@
           "name": "ESPN | US | Motor Sports | Formula 1 - F1",
           "publisher": [
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -349,7 +349,6 @@
             "EMPOWER RETIREMENT",
             "Firestone Walker Brewing Company",
             "INC.",
-            "Jagermeister",
             "JAGERMEISTER",
             "JOSH CELLARS",
             "Kalshi",
@@ -372,7 +371,7 @@
             "WOODFORD  RESERVE"
           ],
           "exceptions": [
-            "BRAND=AMAZON WEB SERVICES, Amazon Web Services, Amazon Web Services, DHL, DHL, GOVERNMENT OF QATAR, HEINEKEN, HEINEKEN, HEINEKEN, Lenovo, LENOVO, LIQUID I.V., Mercedes Benz, MERCEDES-BENZ, PIRELLI, SALESFORCE, SALESFORCE.COM, Saudi Aramco, TRAVEL TEXAS, Travel Texas"
+            "BRAND=AMAZON WEB SERVICES, DHL, GOVERNMENT OF QATAR, HEINEKEN, Lenovo, LIQUID I.V., Mercedes Benz, MERCEDES-BENZ, PIRELLI, SALESFORCE, SALESFORCE.COM, Saudi Aramco, TRAVEL TEXAS"
           ]
         }
       ],
@@ -396,7 +395,6 @@
         "EMPOWER RETIREMENT",
         "Firestone Walker Brewing Company",
         "INC.",
-        "Jagermeister",
         "JAGERMEISTER",
         "JOSH CELLARS",
         "Kalshi",
@@ -459,7 +457,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=AMAZON WEB SERVICES, Amazon Web Services, Amazon Web Services, DHL, DHL, GOVERNMENT OF QATAR, HEINEKEN, HEINEKEN, HEINEKEN, Lenovo, LENOVO, LIQUID I.V., Mercedes Benz, MERCEDES-BENZ, PIRELLI, SALESFORCE, SALESFORCE.COM, Saudi Aramco, TRAVEL TEXAS, Travel Texas"
+        "BRAND=AMAZON WEB SERVICES, DHL, GOVERNMENT OF QATAR, HEINEKEN, Lenovo, LIQUID I.V., Mercedes Benz, MERCEDES-BENZ, PIRELLI, SALESFORCE, SALESFORCE.COM, Saudi Aramco, TRAVEL TEXAS"
       ]
     },
     "girls high school basketball": {
@@ -470,11 +468,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -599,11 +597,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -728,11 +726,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -857,11 +855,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -986,11 +984,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1115,11 +1113,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1244,11 +1242,11 @@
           "id": "c4121512-7db8-4902-962c-dd7630c5fb2e",
           "name": "ESPN | US | Youth Sports",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1374,10 +1372,10 @@
           "name": "ESPN | US | Golf | LPGA Tour",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1432,10 +1430,10 @@
           "name": "ESPN | US | MLB Restrictions",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1462,7 +1460,6 @@
             "Gemini",
             "IBM",
             "INC.",
-            "Inc.",
             "Kalshi",
             "Kraken Services",
             "L.L.C.",
@@ -1514,7 +1511,7 @@
             "WWE"
           ],
           "exceptions": [
-            "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, bet365, BET365 (HILLSIDE), BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FANDUEL, FanDuel sports network, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INC., INC., INC., INCORPORATED, LLC, LLC, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Polymarket, Polymarket, Potawatomi, Potawatomi Hotel & Casino, POTAWATOMI HOTEL & CASINO, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
+            "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INCORPORATED, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Potawatomi, Potawatomi Hotel & Casino, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
           ]
         }
       ],
@@ -1530,7 +1527,6 @@
         "Gemini",
         "IBM",
         "INC.",
-        "Inc.",
         "Kalshi",
         "Kraken Services",
         "L.L.C.",
@@ -1598,7 +1594,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, bet365, BET365 (HILLSIDE), BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FANDUEL, FanDuel sports network, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INC., INC., INC., INCORPORATED, LLC, LLC, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Polymarket, Polymarket, Potawatomi, Potawatomi Hotel & Casino, POTAWATOMI HOTEL & CASINO, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
+        "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INCORPORATED, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Potawatomi, Potawatomi Hotel & Casino, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
       ]
     },
     "mlb baseball": {
@@ -1610,10 +1606,10 @@
           "name": "ESPN | US | MLB Restrictions",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1640,7 +1636,6 @@
             "Gemini",
             "IBM",
             "INC.",
-            "Inc.",
             "Kalshi",
             "Kraken Services",
             "L.L.C.",
@@ -1692,7 +1687,7 @@
             "WWE"
           ],
           "exceptions": [
-            "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, bet365, BET365 (HILLSIDE), BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FANDUEL, FanDuel sports network, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INC., INC., INC., INCORPORATED, LLC, LLC, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Polymarket, Polymarket, Potawatomi, Potawatomi Hotel & Casino, POTAWATOMI HOTEL & CASINO, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
+            "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INCORPORATED, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Potawatomi, Potawatomi Hotel & Casino, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
           ]
         }
       ],
@@ -1708,7 +1703,6 @@
         "Gemini",
         "IBM",
         "INC.",
-        "Inc.",
         "Kalshi",
         "Kraken Services",
         "L.L.C.",
@@ -1776,7 +1770,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, bet365, BET365 (HILLSIDE), BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FANDUEL, FanDuel sports network, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INC., INC., INC., INCORPORATED, LLC, LLC, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Polymarket, Polymarket, Potawatomi, Potawatomi Hotel & Casino, POTAWATOMI HOTEL & CASINO, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
+        "BRAND=888 Casino, Argosy Casino/Penn National Gaming, BALLY BET, BALLY SPORT, Bally's Chicago, BALLY'S QUAD CITIES CASINO & HOTEL, BET365, BET365 (HILLSIDE), BET365 - MEXICO, bet365 2, BET365 GROUP LIMITED, BET365.COM, BETMGM, Betr, BETR HOLDINGS, Caesars Casino, CAESARS ENTERTAINMENT, CAESARS INTERACTIVE ENTERTAINMENT NEW JE, Caesars Riverboat Casino, Caesars Slots, Caesars Southern Indiana, Circa Las Vegas, Circa Resort & Casino, CIRCA SPORTS, Crown Gaming (DraftKings), Delaware North, DELAWARE NORTH COMPANIES, DRAFT KINGS, Draft Kings  - National, Fanatics Sportsbook & Casino, FANDUEL, FanDuel sports network, Hard Rock Bet, HARD ROCK CAFE INTERNATIONAL (USA), Hard Rock Casino App - National, Hard Rock Casino Rockford, Hard Rock Hotel & Casino Bristol, Hard Rock Hotel & Casino Sacramento, Hard Rock International, Hard Rock Stadium, INC., INCORPORATED, LLC, NORTHSTAR GAMING (ONTARIO) INC., Oaklawn Jockey Club, Oaklawn Racing Casino Resort, Penn Interactive, PENN NATIONAL GAMING, POINTSBET, Polymarket, Potawatomi, Potawatomi Hotel & Casino, Potawatomi Hotel & Casino - National, ROMAN HEALTH, ROMAN HEALTH VENTURES INC., RUSH STREET GAMING, theScore"
       ]
     },
     "national basketball association": {
@@ -1788,10 +1782,10 @@
           "name": "ESPN | US | Basketball | NBA",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1832,10 +1826,10 @@
           "name": "ESPN | US | Basketball | NBA",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1895,10 +1889,10 @@
           "name": "ESPN | US | Football | NFL",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -1943,7 +1937,7 @@
             "Oklahoma Tobacco Helpline"
           ],
           "exceptions": [
-            "BRAND=BETMGM, BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
+            "BRAND=BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
           ]
         }
       ],
@@ -1993,7 +1987,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=BETMGM, BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
+        "BRAND=BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
       ]
     },
     "national hockey league": {
@@ -2005,10 +1999,10 @@
           "name": "ESPN | US | Hockey | NHL",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2094,10 +2088,10 @@
           "name": "ESPN | US | Football | NFL",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2142,7 +2136,7 @@
             "Oklahoma Tobacco Helpline"
           ],
           "exceptions": [
-            "BRAND=BETMGM, BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
+            "BRAND=BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
           ]
         }
       ],
@@ -2192,7 +2186,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=BETMGM, BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
+        "BRAND=BETMGM, Caesars Casino, CAESARS ENTERTAINMENT, DRAFT KINGS, FANDUEL, INC., LLC, SEMINOLE HARD ROCK HOTEL"
       ]
     },
     "pga championship": {
@@ -2204,10 +2198,10 @@
           "name": "ESPN | US | Golf | PGA Championship",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2316,10 +2310,10 @@
           "name": "ESPN | US | Golf | PGA Jr. League Championship",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2480,10 +2474,10 @@
           "name": "ESPN | US | Golf | PGA Tour",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2501,7 +2495,6 @@
             "BULGARI",
             "Bulgari (LVMH)",
             "Bulova",
-            "BULOVA",
             "Carter's Collective Fine Jewelry",
             "CARTIER",
             "Cartier International AG",
@@ -2512,9 +2505,7 @@
             "Dior - DUPLICATE",
             "FOOD & DRUG ADMINISTRATION",
             "Fossil",
-            "FOSSIL",
             "Gucci",
-            "GUCCI",
             "HARRY WINSTON",
             "Hermes International",
             "HERMES OF PARIS",
@@ -2528,7 +2519,6 @@
             "LVMH MOET HENNESSSY LOUIS VUITTON",
             "LVMH MOET HENNESSY LOUIS VUITTON B.V.",
             "MB Financial Bank",
-            "Montblanc",
             "MONTBLANC",
             "MORGAN STANLEY",
             "Morgan Stanley Smith Barney LLC",
@@ -2539,12 +2529,10 @@
             "Northern Trust Corporation - National",
             "OMEGA",
             "Pandora",
-            "PANDORA",
             "PATEK PHILIPPE",
             "PATEK PHILIPPE HOLDING SA",
             "Piaget",
             "PNC Bank",
-            "PNC BANK",
             "Polymarket",
             "Raven",
             "RBC Bank",
@@ -2566,7 +2554,6 @@
             "UNITED PARCEL SERVICE OF AMERICA",
             "United States Postal Service",
             "UPS STORES",
-            "ZENITH",
             "Zenith"
           ],
           "exceptions": [
@@ -2579,7 +2566,6 @@
         "BRANCH OF LVMH SWISS MANUFACTURE",
         "BULGARI",
         "Bulgari (LVMH)",
-        "BULOVA",
         "Bulova",
         "Carter's Collective Fine Jewelry",
         "CARTIER",
@@ -2591,9 +2577,7 @@
         "Dior - DUPLICATE",
         "FOOD & DRUG ADMINISTRATION",
         "Fossil",
-        "FOSSIL",
         "Gucci",
-        "GUCCI",
         "HARRY WINSTON",
         "Hermes International",
         "HERMES OF PARIS",
@@ -2608,7 +2592,6 @@
         "LVMH MOET HENNESSY LOUIS VUITTON B.V.",
         "MB Financial Bank",
         "MONTBLANC",
-        "Montblanc",
         "MORGAN STANLEY",
         "Morgan Stanley Smith Barney LLC",
         "MOVADO GROUP",
@@ -2618,12 +2601,10 @@
         "Northern Trust Corporation - National",
         "OMEGA",
         "Pandora",
-        "PANDORA",
         "PATEK PHILIPPE",
         "PATEK PHILIPPE HOLDING SA",
         "Piaget",
         "PNC Bank",
-        "PNC BANK",
         "Polymarket",
         "Raven",
         "RBC Bank",
@@ -2645,7 +2626,6 @@
         "UNITED PARCEL SERVICE OF AMERICA",
         "United States Postal Service",
         "UPS STORES",
-        "ZENITH",
         "Zenith"
       ],
       "excluded_industries": [
@@ -2673,11 +2653,11 @@
           "id": "a8d01767-d4a0-4f9d-90fc-910319a1f9eb",
           "name": "ESPN | US | Soccer | Spanish LaLiga",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2691,7 +2671,7 @@
           ],
           "excluded_brands": [],
           "exceptions": [
-            "BRAND=ELECTRONIC ARTS, Electronic Arts, Electronic Arts - Mobile"
+            "BRAND=ELECTRONIC ARTS, Electronic Arts - Mobile"
           ]
         }
       ],
@@ -2710,7 +2690,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=ELECTRONIC ARTS, Electronic Arts, Electronic Arts - Mobile"
+        "BRAND=ELECTRONIC ARTS, Electronic Arts - Mobile"
       ]
     },
     "spanish laliga 2": {
@@ -2721,11 +2701,11 @@
           "id": "a8d01767-d4a0-4f9d-90fc-910319a1f9eb",
           "name": "ESPN | US | Soccer | Spanish LaLiga",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2739,7 +2719,7 @@
           ],
           "excluded_brands": [],
           "exceptions": [
-            "BRAND=ELECTRONIC ARTS, Electronic Arts, Electronic Arts - Mobile"
+            "BRAND=ELECTRONIC ARTS, Electronic Arts - Mobile"
           ]
         }
       ],
@@ -2758,7 +2738,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=ELECTRONIC ARTS, Electronic Arts, Electronic Arts - Mobile"
+        "BRAND=ELECTRONIC ARTS, Electronic Arts - Mobile"
       ]
     },
     "ultimate fighting championship": {
@@ -2769,11 +2749,11 @@
           "id": "4b95d38e-8ae8-4c1b-846f-28ee80972c16",
           "name": "ESPN | US | Mixed Martial Arts - MMA | UFC",
           "publisher": [
-            "Fubo TV",
             "ABC",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2824,10 +2804,10 @@
           "name": "Sports | Golf | Western Amateur Golf Championships",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2842,7 +2822,7 @@
           "excluded_asset_tags": [],
           "excluded_brands": [],
           "exceptions": [
-            "BRAND=Acushnet, Acushnet, MORGAN STANLEY"
+            "BRAND=Acushnet, MORGAN STANLEY"
           ]
         }
       ],
@@ -2862,7 +2842,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=Acushnet, Acushnet, MORGAN STANLEY"
+        "BRAND=Acushnet, MORGAN STANLEY"
       ]
     },
     "wnba": {
@@ -2874,10 +2854,10 @@
           "name": "ESPN | US | Basketball | NBA",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2918,10 +2898,10 @@
           "name": "ESPN | US | Basketball | NBA",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -2964,10 +2944,10 @@
           "name": "NCAA (College Sports) - ACC",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -3032,10 +3012,10 @@
           "name": "NCAA (College Sports) - ACC Excluded",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -3063,7 +3043,7 @@
             "Oklahoma Tobacco Helpline"
           ],
           "exceptions": [
-            "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, Cerveza Cristal, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, DOORDASH, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INC., INC., INCORPORATED, Juici Patties, LLC, Macs Smokehouse Grill, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, Old Town Spaghetti Store, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Revolution Brewing, Revolution Brewing, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, STELLA ROSA, Stella Rosa Wines, THE"
+            "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, DOORDASH, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INCORPORATED, Juici Patties, LLC, Macs Smokehouse Grill, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, Old Town Spaghetti Store, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Revolution Brewing, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, Stella Rosa Wines, THE"
           ]
         }
       ],
@@ -3096,7 +3076,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, Cerveza Cristal, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, DOORDASH, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INC., INC., INCORPORATED, Juici Patties, LLC, Macs Smokehouse Grill, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, Old Town Spaghetti Store, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Revolution Brewing, Revolution Brewing, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, STELLA ROSA, Stella Rosa Wines, THE"
+        "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, DOORDASH, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INCORPORATED, Juici Patties, LLC, Macs Smokehouse Grill, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, Old Town Spaghetti Store, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Revolution Brewing, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, Stella Rosa Wines, THE"
       ]
     },
     "inside the nba": {
@@ -3108,10 +3088,10 @@
           "name": "ESPN | US | Inside the NBA",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -3152,10 +3132,10 @@
           "name": "ESPN | US, ANZ | Baseball, Softball | Little League World Series - LLWS",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "Australia",
@@ -3210,7 +3190,6 @@
             "DISNEY+ BRAND SYNERGY",
             "Disney+ Synergy",
             "ESPN Synergy",
-            "FREEFORM",
             "Freeform",
             "FX Networks",
             "FX Networks Synergy",
@@ -3262,7 +3241,6 @@
         "DISNEY+ BRAND SYNERGY",
         "Disney+ Synergy",
         "ESPN Synergy",
-        "FREEFORM",
         "Freeform",
         "FX Networks",
         "FX Networks Synergy",
@@ -3382,9 +3360,9 @@
           "id": "12832ef1-113b-4771-b7d3-ce0c2b6c84d6",
           "name": "Disney+, ESPN, Hulu | US | MLB TV - GKB Exclusion",
           "publisher": [
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -3405,7 +3383,6 @@
       ],
       "excluded_ad_products": [],
       "excluded_agencies": [
-        "GOOD KARMA BRANDS",
         "Good Karma Brands",
         "LLC"
       ],
@@ -3425,10 +3402,10 @@
           "name": "ESPN | US | Football | NFL Flag Championships",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -3597,10 +3574,10 @@
           "name": "ESPN | US | Special Olympics",
           "publisher": [
             "ABC",
-            "Fubo TV",
-            "Hulu",
             "Disney Plus",
-            "ESPN"
+            "ESPN",
+            "Fubo TV",
+            "Hulu"
           ],
           "country": [
             "United States"
@@ -3701,7 +3678,6 @@
             "Jay's Fine Jewelry",
             "LVMH",
             "Pandora",
-            "PANDORA",
             "Perry's Diamonds & Estate Jewelry",
             "REALREAL, INC., THE",
             "Richter and Phillips Jewelers",
@@ -3723,7 +3699,6 @@
         "Jay's Fine Jewelry",
         "LVMH",
         "Pandora",
-        "PANDORA",
         "Perry's Diamonds & Estate Jewelry",
         "REALREAL, INC., THE",
         "Richter and Phillips Jewelers",
@@ -3832,7 +3807,6 @@
             "BULGARI ITALIA S.P.A.",
             "BULGARI S.P.A.",
             "Bulova",
-            "BULOVA",
             "CARTIER",
             "Cartier International AG",
             "Chopard",
@@ -3840,9 +3814,7 @@
             "Concord",
             "DIOR",
             "Fossil",
-            "FOSSIL",
             "Gucci",
-            "GUCCI",
             "Gucci America Inc",
             "HAMILTON",
             "Hamilton & Co",
@@ -3858,7 +3830,6 @@
             "LVMH - Tag Heuer",
             "LVMH MOET HENNESSY LOUIS VUITTON B.V.",
             "LVMH Watch & Jewelry Central Europe GmbH",
-            "Montblanc",
             "MONTBLANC",
             "MOVADO GROUP, INC.",
             "OMEGA",
@@ -3887,7 +3858,7 @@
             "ZENITH, SUCCURSALE DE LVMH SWISS MANUFAC"
           ],
           "exceptions": [
-            "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, Cerveza Cristal, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INC., INC., INCORPORATED, LLC, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, STELLA ROSA, Stella Rosa Wines, THE"
+            "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INCORPORATED, LLC, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, Stella Rosa Wines, THE"
           ]
         }
       ],
@@ -3904,7 +3875,6 @@
         "BULGARI ITALIA S.P.A.",
         "BULGARI S.P.A.",
         "Bulova",
-        "BULOVA",
         "CARTIER",
         "Cartier International AG",
         "Chopard",
@@ -3912,9 +3882,7 @@
         "Concord",
         "DIOR",
         "Fossil",
-        "FOSSIL",
         "Gucci",
-        "GUCCI",
         "Gucci America Inc",
         "HAMILTON",
         "Hamilton & Co",
@@ -3931,7 +3899,6 @@
         "LVMH MOET HENNESSY LOUIS VUITTON B.V.",
         "LVMH Watch & Jewelry Central Europe GmbH",
         "MONTBLANC",
-        "Montblanc",
         "MOVADO GROUP, INC.",
         "OMEGA",
         "PANDORA",
@@ -3996,7 +3963,7 @@
       "included_ad_products": [],
       "included_agencies": [],
       "exceptions": [
-        "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, Cerveza Cristal, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INC., INC., INCORPORATED, LLC, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, STELLA ROSA, Stella Rosa Wines, THE"
+        "BRAND=Abita Brewing Company, Allagash Brewing Co, ALLAGASH BREWING COMPANY, AMSTEL., ANHEUSER BUSCH, ASAHI BEVERAGES, Asahi Beverages America, ASAHI BEVERAGES PTY LTD, ATHLETIC BREWING COMPANY LLC, BAVARIA, BELL'S BREWERY, Bogle Family Wine Collection, BOSTON BEER COMPANY, BRAHMA, BUD LIGHT, BUDWEISER, Carbliss, CERVEZA CRISTAL, CERVEZA ESCUDO, CERVEZA IMPERIAL, Cerveza Modelo, CERVEZA PATAGONIA, Constellation Beer - Modelo Chelada, Constellation Beer - Victoria, COORS, COORS LIGHT, CORONA, CORONA SUNBREW, D.G YUENGLING & SON, Diageo - Guinness, E. & J. Gallo Winery, EIGHT Brewing Co, FECOVITA, Firestone Walker Brewing Company, HEINEKEN, HEINEKEN ARGENTINA, Inc., INCORPORATED, LLC, MICHELOB, MICHELOB ULTRA, MILLER LITE, MILLER'S ALE HOUSE, MODELO ESPECIAL, MOLSON COORS, PACIFICO, PITTSBURGH BREWING COMPANY, QUILMES, Royal Guard, SAUCY BREW WORKS, SCHNEIDER, SHINER BEERS, SIERRA NEVADA BREWING CO., STELLA ARTOIS, Stella Rosa, Stella Rosa Wines, THE"
       ]
     }
   }

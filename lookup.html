@@ -414,8 +414,22 @@
     const IRM_REFERENCE_SHEET =
       "https://docs.google.com/spreadsheets/d/1Oxy3KhssBqde7OtFpzxGhFpwIDCsUMGFH6-70LMfal0/edit?gid=950546083";
 
+    function dedupeList(items) {
+      const seen = new Set();
+      const out = [];
+      for (const item of items || []) {
+        const text = String(item).trim();
+        if (!text) continue;
+        const key = text.toLowerCase();
+        if (seen.has(key)) continue;
+        seen.add(key);
+        out.push(text);
+      }
+      return out;
+    }
+
     function sortAlpha(items) {
-      return [...(items || [])].sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+      return dedupeList(items).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
     }
 
     function normalizeException(ex) {
@@ -424,14 +438,16 @@
       const typ = match[1].toUpperCase();
       const rest = match[2].trim();
       if (typ === "BRAND" && rest.includes(",")) {
-        const brands = sortAlpha(rest.split(",").map((b) => b.trim()).filter(Boolean));
+        const brands = dedupeList(rest.split(",").map((b) => b.trim()).filter(Boolean))
+          .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
         return `${typ}=${brands.join(", ")}`;
       }
       return `${typ}=${rest}`;
     }
 
     function sortExceptions(exceptions) {
-      return sortAlpha((exceptions || []).map(normalizeException));
+      return dedupeList((exceptions || []).map(normalizeException))
+        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
     }
 
     function ruleIncludesCountry(rule, countryName) {
@@ -649,8 +665,8 @@
       );
       result.rule_count = merged.rules.length;
       result.rules = merged.rules;
-      result.publishers = [...merged.publishers].sort((a, b) => a.localeCompare(b));
-      result.countries = [...merged.countries].sort((a, b) => a.localeCompare(b));
+      result.publishers = sortAlpha([...merged.publishers]);
+      result.countries = sortAlpha([...merged.countries]);
       return result;
     }
 
